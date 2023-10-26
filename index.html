@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+    <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js">
+    </script>
+    <script>
+
+google.charts.load('current', {packages: ['corechart']}); 
+google.charts.load('current', {'packages':['treemap']});    
+
+/*graph 1 data */
+var might_hit=0;
+  var wont_hit=0;
+
+/*graph 2 data*/
+
+var days=[];
+var asteroids=[];
+
+/*graph 3 data 
+
+
+
+ */
+
+
+  
+async function getnasadata() {
+  const response = await fetch('https://ssd-api.jpl.nasa.gov/cad.api?dist-max=10LD&date-min=2023-10-23&sort=dist',{
+  mode:  'cors' , method: 'GET', 
+ 
+    },);
+    /*console.log('Data', response);*/
+  const data = await response;
+  console.log('Data', data);
+  return data;
+}
+result = "";
+getnasadata().then((data) => {
+  result = data;
+  /*console.log("Nasa Data", result); */
+
+  console.log("test",result["data"])
+ 
+  
+  
+
+  google.charts.load('current', {packages: ['corechart', 'bar']});
+
+
+
+
+ /* document.write("<br> - might hit : " + might_hit);
+    document.write("<br> - won't  hit : " + wont_hit); */
+
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChart2);
+   
+} 
+
+
+);
+
+
+function drawChart() {
+          // Define the chart to be drawn.
+          var data = google.visualization.arrayToDataTable([
+             ['Event', 'Asteroids'],
+             ['Might Hit',  might_hit],
+             ['Will Miss',  wont_hit]
+             
+          ]);
+
+          var options = {title: 'Asteroids Near to Earth'}; 
+
+          // Instantiate and draw the chart.
+          var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+       }
+       
+
+
+       function drawChart2() {
+          // Define the chart to be drawn.
+          const result = days.map((item,index) => {return [item,asteroids[index]]})
+          console.log("result :",  result);
+
+          result.unshift(["Date", "Number of Asteroids"])
+          var data = google.visualization.arrayToDataTable(
+             result
+             
+          );
+
+          var options = {title: 'Asteroids per Date'}; 
+
+          // Instantiate and draw the chart.
+          var chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
+          chart.draw(data, options);
+       }
+       
+
+
+ 
+
+</script>
+</head>
+
+<body>
+    <div id="chart_div"></div>
+    <div id="chart_div2"></div>
+    <div id="chart_div3"></div>
+
+    <script language = "JavaScript">
+      
+    </script>
+</body>
+
+</html>
